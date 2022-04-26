@@ -28,6 +28,12 @@
         Email
         <input type="email" name="email">
         <br>
+        Sdt
+        <input type="text" name="phone_number">
+        <br>
+        Địa chỉ
+        <input type="text" name="address">
+        <br>
         Mật khẩu
         <input type="password" name="password">
         <br>

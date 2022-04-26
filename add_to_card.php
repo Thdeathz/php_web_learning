@@ -12,6 +12,7 @@ if(empty($_SESSION['cart'][$id])) {
     $_SESSION['cart'][$id]['photo'] = $each['photo'];
     $_SESSION['cart'][$id]['price'] = $each['price'];
     $_SESSION['cart'][$id]['quantity'] = 1;
+    mysqli_close($connect);
 } else {
     $_SESSION['cart'][$id]['quantity'] += 1;
 }
