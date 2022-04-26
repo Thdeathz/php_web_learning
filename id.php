@@ -19,12 +19,13 @@ $each = mysqli_fetch_array($result);
 ?>
 
 <div id="giua">
-        <div class="tung_san_pham">
-            <h1>
-                <?php echo $each['name']?>
-            </h1>
-            <img src="admin/products/photos/<?php echo $each['photo']?>" alt="A image">
-            <p><?php echo $each['price']?>VND</p>
-            <p><?php echo $each['description']?></p>
-        </div>
+    <div class="tung_san_pham">
+        <h1>
+            <?php echo $each['name']?>
+        </h1>
+        <img src="admin/products/photos/<?php echo $each['photo']?>" alt="A image">
+        <p><?php echo $each['price']?>VND</p>
+        <p><?php echo $each['description']?></p>
+    </div>
+    <a href="index.php" style="text-decoration: none;"><----Quay lai</a>
 </div>
