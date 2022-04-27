@@ -5,6 +5,9 @@
     <li>
         <a href="../products">Quản lý sản phẩm</a>
     </li>
+    <li>
+        <a href="../orders">Quản lý đơn hàng</a>
+    </li>
 </ul>
 
 <?php if(isset($_GET['error'])) {?>
