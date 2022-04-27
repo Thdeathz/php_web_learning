@@ -1,5 +1,5 @@
 <?php
-
+    require '../check_admin_login.php';
 $name = $_POST['name'];
 $photo = $_FILES['photo'];
 $price = $_POST['price'];

@@ -1,4 +1,5 @@
 <?php
+    require '../check_super_admin.php';
 
 if(empty($_GET['id'])){
     header('location:index.php?error=Không tìm thấy id');

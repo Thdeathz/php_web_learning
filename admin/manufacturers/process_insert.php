@@ -1,5 +1,6 @@
 <?php
-
+    require '../check_super_admin.php';
+    
 if(empty($_POST['name']) || empty($_POST['address']) || empty($_POST['phone']) || empty($_POST['photo'])){
     header('location:form_insert.php?error=Phải điển đủ thông tin');
     exit();
