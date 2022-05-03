@@ -25,6 +25,12 @@ $sql = "insert into customers(name,email,password,phone_number,address)
 value ('$name','$email','$password','$phone_number','$address')";
 mysqli_query($connect,$sql);
 
+//Gửi mail thông báo thành công
+require 'mail.php';
+$title = "Đăng ký thành công";
+$content = "Bạn đã là thành viên của trang web mua bán hàng nóng \!!! <br><a href='http://glacial-bastion-62129.herokuapp.com/'>Web ban hang</a>";
+sendmail($email, $name, $title, $content);
+
 //Tạo phiên đăng nhập với session
 $sql = "select id from customers
 where email = '$email'";
