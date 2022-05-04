@@ -26,6 +26,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign in form</title>
 </head>
+<style>
+    * {
+        text-decoration: none;
+    }
+</style>
 <body>
     <h1>Form đăng nhập</h1>
     <?php if(isset($_GET['error'])) {?>
@@ -54,6 +59,9 @@
         Ghi nhớ đăng nhập
         <br>
         <button>Đăng nhập</button>
+        <a href="forgot_password.php">
+            Quên mật khẩu???
+        </a>
     </form>
     <br>
 </body>
