@@ -40,15 +40,12 @@ $result = mysqli_query($connect,$sql);
             <p><?php echo $each['price']?>VND</p>
             <a href="product.php?id=<?php echo $each['id']?>">
                 Xem chi tiết >>>
-            </a>
-            <?php if(!empty($_SESSION['id'])) {?>
                 <br>
-                <button 
-                    data-id='<?php echo $each['id']?>'
-                    class="btn-add-to-cart"
-                >
+            </a>
+            <?php if(isset($_SESSION['id'])) {?>
+                <a href="add_to_card.php?id=<?php echo $each['id']?>">
                     Thêm vào giỏ hàng
-                </button>
+                </a>
             <?php } ?>
         </div>
     <?php endforeach?>

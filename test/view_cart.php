@@ -38,13 +38,7 @@
                 <td>
                     <a href="update_quantity_in_cart.php?id=<?php echo $id?>&type=decre" style="text-decoration: none;">--</a>
                     <?php echo $each['quantity']?>
-                    <button
-                        class="btn-update-quantity"
-                        data-id='<?php echo $id?>'
-                        data-type='incre'
-                    >
-                        +
-                    </button>
+                    <a href="update_quantity_in_cart.php?id=<?php echo $id?>&type=incre" style="text-decoration: none;">+</a>
                 </td>
                 <td>
                     <?php 
@@ -84,22 +78,5 @@
         <button type="submit">Đặt hàng</button>
     </form>
     <?php } ?>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".btn-update-quantity").click(function(){
-                let id = $(this).data('id');
-                let type = $(this).data('type');
-                $.ajax({
-                    type: "GET",
-                    url: "update_quantity_in_cart.php",
-                    data: {id, type},
-                    success: function (response) {
-                        alert('Thanh cong');
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
