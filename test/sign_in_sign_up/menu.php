@@ -7,10 +7,7 @@
             <a href="sign_in.php" style="text-decoration: none;">Đăng nhập</a>
         </li>
         <li>
-            <button type="button" data-toggle="modal" data-target="#modal-signup">
-                Đăng ký
-            </button>
-            <?php include 'sign_up.php';?>
+            <a href="sign_up.php" style="text-decoration: none;">Đăng ký</a>
         </li>
     </ol>
 </div>
