@@ -15,7 +15,7 @@
     <a href="user.php" style="text-decoration: none;"><----Quay lai</a>
     <?php } else {
         $cart = $_SESSION['cart'];
-        $sum = 0;    
+        $total = 0;    
     ?>
 <body>
     
@@ -34,27 +34,46 @@
                     <img src="admin/products/photos/<?php echo $each['photo']?>" alt="A image" width="100">
                 </td>
                 <td><?php echo $each['name']?></td>
-                <td><?php echo $each['price']?></td>
                 <td>
-                    <a href="update_quantity_in_cart.php?id=<?php echo $id?>&type=decre" style="text-decoration: none;">--</a>
-                    <?php echo $each['quantity']?>
+                    <span class="span-price">
+                        <?php echo $each['price']?>
+                    </span>
+                </td>
+                <td>
+                <button
+                        class="btn-update-quantity"
+                        data-id='<?php echo $id?>'
+                        data-type='0'
+                    >
+                        -
+                    </button>
+                    <span class="span-quantity">
+                        <?php echo $each['quantity']?>
+                    </span>
                     <button
                         class="btn-update-quantity"
                         data-id='<?php echo $id?>'
-                        data-type='incre'
+                        data-type='1'
                     >
                         +
                     </button>
                 </td>
                 <td>
-                    <?php 
-                        $result = $each['price'] * $each['quantity'];
-                        echo $result;
-                        $sum += $result;
-                    ?>
+                    <span class="span-sum">
+                        <?php 
+                            $sum = $each['price'] * $each['quantity'];
+                            echo $sum;
+                            $total += $sum;
+                        ?>
+                    </span>
                 </td>
                 <td>
-                    <a href="delete_from_cart.php?id=<?php echo $id?>" style="text-decoration: none;">X</a>
+                    <button
+                        class="btn-delete"
+                        data-id="<?php echo $id?>"
+                    >
+                        X
+                    </button>
                 </td>
             </tr>
         <?php endforeach?>
@@ -62,7 +81,10 @@
     <a href="user.php" style="text-decoration: none;"><----Quay lai</a>
     <h1>
         Tổng tiền: 
-        $<?php echo $sum?>
+        $
+        <span id="span-total">
+            <?php echo $total?>
+        </span>
     </h1>
     <?php 
     $id = $_SESSION['id'];
@@ -88,18 +110,55 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $(".btn-update-quantity").click(function(){
-                let id = $(this).data('id');
-                let type = $(this).data('type');
+                let btn = $(this);
+                let id = btn.data('id');
+                let type = parseInt(btn.data('type'));
                 $.ajax({
                     type: "GET",
                     url: "update_quantity_in_cart.php",
                     data: {id, type},
                     success: function (response) {
-                        alert('Thanh cong');
+                        let parent_tr = btn.parents('tr');
+                        let price = parent_tr.find('.span-price').text();
+                        let quantity = parent_tr.find('.span-quantity').text();
+                        if(type === 1){
+                            quantity++;
+                        }else{
+                            quantity--;
+                        }
+                        if(quantity == 0){
+                            parent_tr.remove();
+                        }else{
+                            parent_tr.find('.span-quantity').text(quantity);
+                            let sum = price * quantity;
+                            parent_tr.find('.span-sum').text(sum);
+                        }
+                        getTotal();
+                    }
+                });
+            });
+            $(".btn-delete").click(function(){
+                let btn = $(this);
+                let id = btn.data('id');
+                $.ajax({
+                    type: "GET",
+                    url: "delete_from_cart.php",
+                    data: {id},
+                    success: function (response) {
+                        btn.parents('tr').remove();
+                        getTotal();
                     }
                 });
             });
         });
+        function getTotal()
+        {
+            let total = 0;
+            $(".span-sum").each(function(){
+                total += parseFloat($(this).text());
+            });
+            $("#span-total").text(total);
+        }
     </script>
 </body>
 </html>
