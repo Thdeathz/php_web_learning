@@ -43,7 +43,19 @@
 </head>
 <body>
     <div id="tong">
-        <?php include 'menu.php'?>
+        <div id="tren">
+        <h1>Đăng nhập thành công ! 
+            <br>
+            Xin chào
+            <span style="color: blue">
+                <?php echo $_SESSION['name']?>
+            </span>
+        </h1>
+        <br>
+            <a href="sign_out.php">Đăng xuất</a>
+        <br>
+            <a href="view_cart.php">Xem giỏ hàng</a>
+        </div>
         <?php include 'products.php'?>
         <?php include 'footer.php'?>
     </div>

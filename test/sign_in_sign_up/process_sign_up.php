@@ -14,7 +14,9 @@ where email = '$email'";
 $result = mysqli_query($connect,$sql);
 $number_rows = mysqli_fetch_array($result)['count(*)'];
 if($number_rows == 1){
-    echo 'Email đã được đăng ký!';
+    session_start();
+    $_SESSION['error'] = 'Email đã được đăng ký!';
+    header("location:sign_up.php");
     exit;
 }
 
@@ -24,12 +26,11 @@ value ('$name','$email','$password','$phone_number','$address')";
 mysqli_query($connect,$sql);
 
 //Gửi mail thông báo thành công
-/*
 require 'mail.php';
 $title = "Đăng ký thành công";
 $content = "Bạn đã là thành viên của trang web mua bán hàng nóng \!!! <br><a href='http://glacial-bastion-62129.herokuapp.com/'>Web ban hang</a>";
 sendmail($email, $name, $title, $content);
-*/
+
 //Tạo phiên đăng nhập với session
 $sql = "select id from customers
 where email = '$email'";
@@ -40,5 +41,5 @@ $_SESSION['id'] = $id;
 $_SESSION['name'] = $name;
 mysqli_close($connect);
 
-echo 1;
+header("location:sign_in.php");
 

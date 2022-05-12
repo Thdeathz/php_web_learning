@@ -33,8 +33,8 @@ if($number_rows == 1){
         setcookie('remember', $token, time() + 86400 * 30);
     }
 
-    echo 1;
+    header("location:user.php");
     exit;
 }
 
-echo 'Tài khoản mật khẩu không chính xác !';
+header("location:sign_in.php?error=Tài khoản mật khẩu không chính xác !");
