@@ -84,8 +84,10 @@
                             $("#signup-div-error").text(response);
                             $("#signup-div-error").show();
                         } else {
-                            //tạo đường dẫn đến trang khác
-                            window.location.href = "user.php";
+                            $("#modal-signup").modal('toggle');
+                            $(".menu-guest").hide();
+                            $(".menu-user").show();
+                            $("#span-name").text($("input[name='name']")).val();
                         }
                     }
                 });
