@@ -7,7 +7,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Admin</title>
     <style type="text/css">
         .highcharts-figure,
         .highcharts-data-table table {
@@ -58,46 +59,18 @@
     <?php  
         require '../menu.php';
         require '../connect.php';
-        $max_date = 30;
-        $max_date--;
-        $sql = "SELECT 
-        DATE_FORMAT(created_at, '%e-%m') AS 'ngay',
-        SUM(total_price) AS 'doanh_thu'
-        FROM orders
-        WHERE DATE(created_at) >= CURDATE() - INTERVAL $max_date DAY
-        GROUP BY DATE_FORMAT(created_at, '%e-%m');";
-        $result = mysqli_query($connect,$sql);
-
-        //lấy dữ liệu trong 30 ngày gần nhất và đổ vào mảng arr
-        $arr = [];
-        $today = date('d');
-        if($today < $max_date){
-            $get_day_last_month = $max_date - $today;
-            $last_month = date("m", strtotime("-1 month"));
-            $last_month_date = date("Y-m-d", strtotime("-1 month"));
-            $max_day_last_month = (new DateTime($last_month_date))->format('t');
-            $start_day_last_month = $max_day_last_month - $get_day_last_month;
-            for($i = $start_day_last_month; $i <= $max_day_last_month; $i++){
-                $key = $i . "-" . $last_month;
-                $arr[$key] = 0;
-            }
-            $start_day_this_month = 1;
-        } else {
-            $start_day_this_month = $today - $max_date;
-        }
-        $this_month = date("m");
-        for($i = $start_day_this_month; $i <= $today; $i++){
-            $key = $i . "-" . $this_month;
-            $arr[$key] = 0;
-        }
-        
-        foreach($result as $each) {
-            $arr[$each['ngay']] = (float)$each['doanh_thu'];
-        }
-        // echo json_encode($arr);
-        $arrX = array_keys($arr);
-        $arrY = array_values($arr);
     ?>
+    <div>
+        Thống kê doanh thu theo:
+        <form id="form-days" method="GET">
+            <select id="select-days" name="days">
+                <option value="7" selected>7 ngày</option>
+                <option value="15">15 ngày</option>
+                <option value="30">30 ngày</option>
+            </select>
+            <button>Thống kê</button>
+        </form>
+    </div>
     <figure class="highcharts-figure">
     <div id="container"></div>
 </figure>
@@ -108,56 +81,70 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script type="text/javascript">
-    Highcharts.chart('container', {
+    $(document).ready(function () {
+        $("#form-days").submit(function(){
+            event.preventDefault();
+            $.ajax({
+                type: "GET",
+                url: "get_turnover.php",
+                data: $(this).serializeArray(),
+                dataType: "json",
+                success: function (response) {
+                    const arrX = Object.keys(response);
+                    const arrY = Object.values(response);
+                    Highcharts.chart('container', {
+                        title: {
+                            text: 'Thống kê doang thu theo ngày'
+                        },
 
-    title: {
-    text: 'Thống kê doang thu theo tháng'
-    },
+                        yAxis: {
+                        title: {
+                            text: 'Doanh thu'
+                        }
+                        },
 
-    yAxis: {
-    title: {
-        text: 'Doanh thu'
-    }
-    },
+                        xAxis: {
+                            categories: arrX
+                        },
 
-    xAxis: {
-        categories: <?php echo json_encode($arrX)?>
-    },
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle'
+                        },
 
-    legend: {
-    layout: 'vertical',
-    align: 'right',
-    verticalAlign: 'middle'
-    },
+                        plotOptions: {
+                            series: {
+                                label: {
+                                connectorAllowed: false
+                                },
+                            }
+                        },
 
-    plotOptions: {
-    series: {
-        label: {
-        connectorAllowed: false
-        },
-    }
-    },
+                        series: [{
+                            name: '',
+                            data: arrY
+                        }],
 
-    series: [{
-        name: '',
-        data: <?php echo json_encode($arrY)?>
-    }],
+                        responsive: {
+                            rules: [{
+                                condition: {
+                                maxWidth: 500
+                                },
+                                chartOptions: {
+                                legend: {
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom'
+                                }
+                                }
+                            }]
+                        }
 
-    responsive: {
-    rules: [{
-        condition: {
-        maxWidth: 500
-        },
-        chartOptions: {
-        legend: {
-            layout: 'horizontal',
-            align: 'center',
-            verticalAlign: 'bottom'
-        }
-        }
-    }]
-    }
-
+                    });
+                }
+            });
+        }); 
     });
 </script>
 </html>
