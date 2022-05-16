@@ -40,12 +40,39 @@ foreach($result as $each) {
         $arr[$ma_san_pham] = [
             'name' => $each['ten_san_pham'],
             'y' => (int)$each['so_san_pham_ban_duoc'],
-            'drilldown' => $each['ma_san_pham'],
+            'drilldown' => (int)$each['ma_san_pham'],
         ];
     } else {
         $arr[$ma_san_pham]['y'] += $each['so_san_pham_ban_duoc'];
     }
 }
 
+$arr2 = [];
+foreach($arr as $ma_san_pham => $each) {
+    $arr2[$ma_san_pham] = [
+        'name' => $each['name'],
+        'id' => $ma_san_pham,
+    ];
+    $arr2[$ma_san_pham]['data'] = [];
+    if($today < $max_date){
+        for($i = $start_day_last_month; $i <= $max_day_last_month; $i++){
+            $key = $i . "-" . $last_month;
+            $arr2[$ma_san_pham]['data'][$key] = [
+                $key,
+                0
+            ];
+        }
+    }
+}
+foreach ($result as $each) {
+    $ma_san_pham = $each['ma_san_pham'];
+    $key = $each['ngay'];
+    $arr2[$ma_san_pham]['data'][$key] = [
+        $key,
+        (int)$each['so_san_pham_ban_duoc']
+    ];
+}
+
+$object = json_encode([$arr, $arr2]);
 // trả dữ liệu về theo dạng json
-echo json_encode($arr);
+echo $object;

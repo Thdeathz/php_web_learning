@@ -6,7 +6,13 @@ $(document).ready(function () {
     data: {days},
     dataType: 'json',
     success: function (response) {
-      // Create the chart
+      const arr = Object.values(response[0]);
+      const arrDetail = [];
+      Object.values(response[1]).forEach((each)=> {
+        each.data = Object.values(each.data);
+        arrDetail.push(each);
+      })
+      //Create the chart
       Highcharts.chart('container', {
         chart: {
           type: 'column'
@@ -36,17 +42,23 @@ $(document).ready(function () {
             borderWidth: 0,
             dataLabels: {
               enabled: true,
-              format: '{point.y:.1f}%'
+              format: '{point.y:f}'
             }
           }
         },
 
         tooltip: {
           headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:f}</b> of total<br/>'
         },
 
-        series: arrX,
+        series: [
+          {
+            name: "Browsers",
+            colorByPoint: true,
+            data: arr
+          }
+        ],
         drilldown: {
           breadcrumbs: {
             position: {
