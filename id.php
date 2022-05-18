@@ -3,6 +3,7 @@
         border: 0;
         margin: 0;
         box-sizing: border-box;
+        text-align: center !important;
     }
     .tung_san_pham img {
         width: 20%;
