@@ -15,11 +15,28 @@
     <a href="form_insert.php">
         Thêm
     </a>
-    <?php include '../menu.php'?>
     
     <?php
+        include '../menu.php';
         require '../connect.php';
-        $sql = "select * from manufacturers";
+        $page = 1;
+        if(isset($_GET['trang'])){
+            $page = $_GET['trang'];
+        }
+
+        //lấy số kết quả cần bỏ ra trên 1 trang
+        $sql_number_orders = "select count(*) from manufacturers";
+        $number_orders = mysqli_fetch_array(mysqli_query($connect,$sql_number_orders))['count(*)'];
+
+        $number_orders_per_pages = 5;
+        $pages = ceil($number_orders / $number_orders_per_pages);
+        $pass = $number_orders_per_pages * ($page - 1);
+
+        $sql = "
+        select 
+        * 
+        from manufacturers
+        limit $number_orders_per_pages offset $pass";
         $result = mysqli_query($connect,$sql);
     ?>
     <table border="1" width="100%">
@@ -49,7 +66,9 @@
                 </td>
             </tr>
         <?php endforeach ?>
-        
     </table>
+    <?php for($i = 1; $i <= $pages; $i++){?>
+        <a href="?trang=<?php echo $i?>"><?php echo $i?></a>    
+    <?php }?>
 </body>
 </html>

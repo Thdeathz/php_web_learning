@@ -12,16 +12,34 @@
 <body>
     <?php 
         require '../connect.php';
+
+        $page = 1;
+        if(isset($_GET['trang'])){
+            $page = $_GET['trang'];
+        }
+
+        //lấy số kết quả cần bỏ ra trên 1 trang
+        $sql_number_orders = "select count(*) from orders";
+        $number_orders = mysqli_fetch_array(mysqli_query($connect,$sql_number_orders))['count(*)'];
+
+        $number_orders_per_pages = 5;
+        $pages = ceil($number_orders / $number_orders_per_pages);
+        $pass = $number_orders_per_pages * ($page - 1);
+        
         $sql = "select 
         orders.*,
         customers.name,
         customers.phone_number,
         customers.address
         from orders
-        join customers 
-        on customers.id = orders.customer_id";
+        join customers on customers.id = orders.customer_id
+        order by created_at desc
+        limit $number_orders_per_pages offset $pass";
         $result = mysqli_query($connect, $sql);
+
+        
     ?>
+    <h1>Danh sách đơn đặt hàng</h1>
     <table border="1" width="100%">
         <tr>
             <th>Mã</th>
@@ -87,5 +105,8 @@
             </tr>
         <?php endforeach ?>
     </table>
+    <?php for($i = 1; $i <= $pages; $i++){?>
+        <a href="?trang=<?php echo $i?>"><?php echo $i?></a>    
+    <?php }?>
 </body>
 </html>

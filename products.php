@@ -4,10 +4,14 @@
         margin: 0;
         box-sizing: border-box;
     }
+
+
     #giua {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
     }
+
     .tung_san_pham {
         border: 1px solid;
         display: flex;
@@ -26,7 +30,24 @@
 
 <?php 
 require 'admin/connect.php';
-$sql = "select * from products";
+$page = 1;
+if(isset($_GET['trang'])){
+    $page = $_GET['trang'];
+}
+
+//lấy số kết quả cần bỏ ra trên 1 trang
+$sql_number_orders = "select count(*) from products";
+$number_orders = mysqli_fetch_array(mysqli_query($connect,$sql_number_orders))['count(*)'];
+
+$number_orders_per_pages = 6;
+$pages = ceil($number_orders / $number_orders_per_pages);
+$pass = $number_orders_per_pages * ($page - 1);
+
+$sql = "
+select 
+* 
+from products
+limit $number_orders_per_pages offset $pass";
 $result = mysqli_query($connect,$sql);
 ?>
 
