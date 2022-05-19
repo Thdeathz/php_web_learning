@@ -12,7 +12,7 @@
 ?>
     <h1>Không có gì trong giỏ hàng hãy thêm sản phẩm!!!</h1>
     <br>
-    <a href="user.php" style="text-decoration: none;"><----Quay lai</a>
+    <?php include 'go_back_arrow.php'?>
     <?php } else {
         $cart = $_SESSION['cart'];
         $total = 0;    
@@ -78,7 +78,7 @@
             </tr>
         <?php endforeach?>
     </table>
-    <a href="user.php" style="text-decoration: none;"><----Quay lai</a>
+    <?php include 'go_back_arrow.php'?>
     <h1>
         Tổng tiền: 
         $

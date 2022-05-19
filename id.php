@@ -37,14 +37,5 @@ $each = mysqli_fetch_array($result);
                 </button>
         <?php }?>
     </div>
-    <a 
-        href="<?php if(!empty($_SESSION['id'])) {?>
-                user.php
-            <?php } else {?>
-                index.php
-            <?php }?>" 
-        style="text-decoration: none;"
-    >
-        <----Quay lai
-    </a>
+    <?php include 'go_back_arrow.php'?>
 </div>
